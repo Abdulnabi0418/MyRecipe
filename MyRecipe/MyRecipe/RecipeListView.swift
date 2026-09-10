@@ -1,10 +1,5 @@
 import SwiftUI
 
-// MARK: - View
-// Owns ONE instance of the ViewModel via @State (because @Observable classes
-// use @State now, not @StateObject). Reads its properties directly in body —
-// no bindings needed for read-only display, SwiftUI tracks access automatically.
-
 struct RecipeListView: View {
     @State private var viewModel = RecipeListViewModel()
     @State private var searchText = ""
@@ -17,9 +12,7 @@ struct RecipeListView: View {
                 .onSubmit(of: .search) {
                     Task { await viewModel.search(query: searchText) }
                 }
-                // Fires whenever the search text changes — including when
-                // the user taps the "x" to clear it, so we go back to
-                // showing the mixed feed instead of an empty screen.
+              
                 .onChange(of: searchText) { _, newValue in
                     if newValue.isEmpty {
                         Task { await viewModel.loadFeed() }
@@ -29,8 +22,7 @@ struct RecipeListView: View {
                     RecipeDetailView(meal: meal)
                 }
         }
-        // .task runs once when the view first appears — loads a varied
-        // mix of recipes (chicken, beef, mutton, salad, etc.) up front.
+       
         .task {
             await viewModel.loadFeed()
         }
@@ -57,8 +49,6 @@ struct RecipeListView: View {
     }
 }
 
-// A small subview keeps the row markup out of the main body — good practice
-// once rows get more complex than a single Text.
 private struct RecipeRow: View {
     let meal: Meal
 
