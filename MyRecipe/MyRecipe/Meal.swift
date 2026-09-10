@@ -1,17 +1,7 @@
-//
-//  Meal.swift
-//  MyRecipe
-//
-//  Created by Sakib on 2026-08-22.
-//
 
 import Foundation
 import SwiftUI
-// MARK: - Model
-// Plain data types. No logic beyond parsing/shaping the data.
-// These mirror the JSON shape that TheMealDB API returns.
 
-/// The API wraps results in a "meals" array (or null if nothing found).
 struct MealResponse: Codable {
     let meals: [Meal]?
 }
@@ -22,9 +12,6 @@ struct Meal: Codable, Identifiable, Hashable {
     let thumbnailURL: String
     let instructions: String
 
-    // TheMealDB returns ingredients as 20 separate numbered fields
-    // (strIngredient1...strIngredient20, strMeasure1...strMeasure20)
-    // instead of an array. We capture the first 8 here to keep it simple.
     let ingredient1: String?
     let ingredient2: String?
     let ingredient3: String?
@@ -43,7 +30,7 @@ struct Meal: Codable, Identifiable, Hashable {
     let measure7: String?
     let measure8: String?
 
-    // CodingKeys map our clean Swift names to the API's actual JSON keys.
+  
     enum CodingKeys: String, CodingKey {
         case id = "idMeal"
         case name = "strMeal"
@@ -67,10 +54,7 @@ struct Meal: Codable, Identifiable, Hashable {
         case measure8 = "strMeasure8"
     }
 
-    /// Computed property: turns the 8 messy ingredient/measure pairs
-    /// into a clean array the View can just loop over with ForEach.
-    /// This kind of "reshape raw data into something UI-friendly"
-    /// logic belongs on the Model, not the View.
+    
     var ingredientsList: [String] {
         let pairs: [(String?, String?)] = [
             (ingredient1, measure1), (ingredient2, measure2),
