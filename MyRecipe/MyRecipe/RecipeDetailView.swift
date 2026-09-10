@@ -8,11 +8,6 @@
 import Foundation
 import SwiftUI
 
-// A simple screen like this doesn't need its own ViewModel — it just
-// displays data it was handed. Not every View needs a ViewModel;
-// add one only when a screen has its own logic/state to manage
-// (loading, editing, favoriting, etc).
-
 struct RecipeDetailView: View {
     let meal: Meal
 
